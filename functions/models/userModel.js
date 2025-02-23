@@ -61,6 +61,28 @@ export const getUserByIdModel = async (uid) => {
 };
 
 /**
+ * Get users by name
+ * @param {string} name
+ * @returns {Promise<Array>} List of user data or an empty array if not found
+ */
+export const getUserByNameModel = async (name) => {
+  try {
+    // console.log("Fetching users with name:", name); //for debugging
+    const usersSnapshot = await admin.firestore().collection('users').where('name', '==', name).get();
+    const users = [];
+
+    usersSnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() });
+    });
+
+    return users; // Return an array of users
+  } catch (error) {
+    console.error("Error fetching users by name:", error);
+    return []; // Return an empty array in case of error
+  }
+};
+
+/**
  * Update user role
  * @param {string} uid
  * @param {string} role

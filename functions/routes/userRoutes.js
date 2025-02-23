@@ -3,6 +3,7 @@ import {
   register, 
   getAllUsers, 
   getUserById, 
+  getUserByName,
   updateRole, 
   updateUser, 
   deleteUser, 
@@ -16,6 +17,7 @@ const authRouter = express.Router();
 authRouter.post("/register", register); // Register a new user
 authRouter.get("/users", getAllUsers); // Get all users
 authRouter.get("/user/:uid", getUserById); // Get a user by UID
+authRouter.get("/user/name/:name", getUserByName); // Get a user by name
 authRouter.put("/user/role", updateRole); // Update user role
 authRouter.put("/user/update", updateUser); // Update user details
 authRouter.delete("/user/:uid", deleteUser); // Delete a user
