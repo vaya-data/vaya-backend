@@ -15,13 +15,13 @@ import {
  */
 export const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
+    if (!email || !password || !name) {
+      return res.status(400).json({ error: 'Email, password, and name are required' });
     }
 
-    const userRecord = await createUser(email, password);
+    const userRecord = await createUser(email, password, name);
 
     return res.status(201).json({ 
       message: 'User registered successfully',

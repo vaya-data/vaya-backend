@@ -4,9 +4,10 @@ import admin from 'firebase-admin';
  * Create a new user in Firebase Authentication and Firestore
  * @param {string} email
  * @param {string} password
+ * @param {string} name
  * @returns {Promise<Object>} Created user record
  */
-export const createUser = async (email, password) => {
+export const createUser = async (email, password, name) => {
   const userRecord = await admin.auth().createUser({
     email,
     password,
@@ -16,7 +17,7 @@ export const createUser = async (email, password) => {
   const userData = {
     uid: userRecord.uid,
     email,
-    name: 'Anonymous', // Default name
+    name, // Use the provided name
     role: 'Player', // Default role
     blacklisted: false, // Default false
     gamesHistory: [], // Empty array
