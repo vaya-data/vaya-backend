@@ -4,9 +4,10 @@ import admin from 'firebase-admin';
  * Create a new user in Firebase Authentication and Firestore
  * @param {string} email
  * @param {string} password
+ * @param {string} name
  * @returns {Promise<Object>} Created user record
  */
-export const createUser = async (email, password) => {
+export const createUser = async (email, password, name) => {
   const userRecord = await admin.auth().createUser({
     email,
     password,
@@ -16,7 +17,7 @@ export const createUser = async (email, password) => {
   const userData = {
     uid: userRecord.uid,
     email,
-    name: 'Anonymous', // Default name
+    name, // Use the provided name
     role: 'Player', // Default role
     blacklisted: false, // Default false
     gamesHistory: [], // Empty array
@@ -57,6 +58,28 @@ export const getUserByIdModel = async (uid) => {
     return null;
   }
   return { id: userDoc.id, ...userDoc.data() };
+};
+
+/**
+ * Get users by name
+ * @param {string} name
+ * @returns {Promise<Array>} List of user data or an empty array if not found
+ */
+export const getUserByNameModel = async (name) => {
+  try {
+    // console.log("Fetching users with name:", name); //for debugging
+    const usersSnapshot = await admin.firestore().collection('users').where('name', '==', name).get();
+    const users = [];
+
+    usersSnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() });
+    });
+
+    return users; // Return an array of users
+  } catch (error) {
+    console.error("Error fetching users by name:", error);
+    return []; // Return an empty array in case of error
+  }
 };
 
 /**
