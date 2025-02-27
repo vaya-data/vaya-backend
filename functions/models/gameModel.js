@@ -1,4 +1,4 @@
-import admin from "firebase-admin";
+import { db } from "../config/firebaseAdmin.js";
 
 /**
  * Add a game to Firestore
@@ -32,7 +32,7 @@ export const addGameModel = async ({
             createdAt: admin.firestore.FieldValue.serverTimestamp(), // Track creation time
         };
 
-        const gameRef = await admin.firestore().collection("games").add(newGame);
+        const gameRef = await db.collection("games").add(newGame);
         return { id: gameRef.id, ...newGame };
     } catch (error) {
         console.error("Error adding game:", error);
@@ -46,7 +46,7 @@ export const addGameModel = async ({
  */
 export const getGameModel = async () => {
     try {
-        const gameSnapshot = await admin.firestore().collection("games").get();
+        const gameSnapshot = await db.collection("games").get();
         const gameData = [];
 
         gameSnapshot.forEach((doc) => {
@@ -67,7 +67,7 @@ export const getGameModel = async () => {
  */
 export const getGameByIdModel = async (gameId) => {
     try {
-        const gameDoc = await admin.firestore().collection("games").doc(gameId).get();
+        const gameDoc = await db.collection("games").doc(gameId).get();
         if (!gameDoc.exists) {
             return null;
         }
@@ -85,7 +85,7 @@ export const getGameByIdModel = async (gameId) => {
  */
 export const getGameByNameModel = async (gameName) => {
     try {
-        const gameSnapshot = await admin.firestore().collection("games").where("name", "==", gameName).get();
+        const gameSnapshot = await db.collection("games").where("name", "==", gameName).get();
         const games = [];
 
         if (gameSnapshot.empty) {
@@ -111,7 +111,7 @@ export const getGameByNameModel = async (gameName) => {
  */
 export const updateGameModel = async (gameId, updateData) => {
     try {
-        const gameRef = admin.firestore().collection("games").doc(gameId);
+        const gameRef = db.collection("games").doc(gameId);
         const gameDoc = await gameRef.get();
 
         if (!gameDoc.exists) {
@@ -137,7 +137,7 @@ export const updateGameModel = async (gameId, updateData) => {
  */
 export const deleteGameModel = async (gameId) => {
     try {
-        const gameRef = admin.firestore().collection("games").doc(gameId);
+        const gameRef = db.collection("games").doc(gameId);
         const gameDoc = await gameRef.get();
 
         if (!gameDoc.exists) {

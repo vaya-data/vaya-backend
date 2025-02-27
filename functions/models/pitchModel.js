@@ -1,4 +1,4 @@
-import admin from "firebase-admin";
+import { db } from "../config/firebaseAdmin.js";
 
 /**
  * Add a pitch to Firestore
@@ -16,16 +16,16 @@ export const addPitchModel = async ({ address, gmaplink, pitchname, type }) => {
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
   };
 
-  const pitchRef = await admin.firestore().collection("pitches").add(newPitch);
+  const pitchRef = await db.collection("pitches").add(newPitch);
   return { id: pitchRef.id, ...newPitch };
 };
-
+  
 /**
  * Get all pitch data
  * @returns {Promise<Array>} List of pitches
  */
 export const getPitchModel = async () => {
-  const pitchSnapshot = await admin.firestore().collection("pitches").get();
+  const pitchSnapshot = await db.collection("pitches").get();
   const pitchData = [];
 
   pitchSnapshot.forEach((doc) => {
@@ -41,7 +41,7 @@ export const getPitchModel = async () => {
  * @returns {Promise<Object|null>} Pitch data or null if not found
  */
 export const getPitchByIdModel = async (pitchId) => {
-  const pitchDoc = await admin.firestore().collection("pitches").doc(pitchId).get();
+  const pitchDoc = await db.collection("pitches").doc(pitchId).get();
   if (!pitchDoc.exists) {
     return null;
   }
@@ -55,7 +55,7 @@ export const getPitchByIdModel = async (pitchId) => {
  * @returns {Promise<boolean>} True if updated, false if pitch not found
  */
 export const updatePitchModel = async (pitchId, updateData) => {
-  const pitchRef = admin.firestore().collection("pitches").doc(pitchId);
+  const pitchRef = db.collection("pitches").doc(pitchId);
   const pitchDoc = await pitchRef.get();
 
   if (!pitchDoc.exists) {
@@ -76,7 +76,7 @@ export const updatePitchModel = async (pitchId, updateData) => {
  * @returns {Promise<boolean>} True if deleted, false if pitch not found
  */
 export const deletePitchModel = async (pitchId) => {
-  const pitchRef = admin.firestore().collection("pitches").doc(pitchId);
+  const pitchRef = db.collection("pitches").doc(pitchId);
   const pitchDoc = await pitchRef.get();
 
   if (!pitchDoc.exists) {

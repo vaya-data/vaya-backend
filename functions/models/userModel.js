@@ -1,4 +1,4 @@
-import admin from 'firebase-admin';
+import { db } from "../config/firebaseAdmin.js";
 
 /**
  * Create a new user in Firebase Authentication and Firestore
@@ -27,7 +27,7 @@ export const createUser = async (email, password, name) => {
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
   };
 
-  await admin.firestore().collection('users').doc(userRecord.uid).set(userData);
+  await db.collection('users').doc(userRecord.uid).set(userData);
 
   return { id: userRecord.uid, ...userData };
 };
@@ -37,7 +37,7 @@ export const createUser = async (email, password, name) => {
  * @returns {Promise<Array>} List of users
  */
 export const getAllUsersModel = async () => {
-  const usersSnapshot = await admin.firestore().collection('users').get();
+  const usersSnapshot = await db.collection('users').get();
   const users = [];
 
   usersSnapshot.forEach((doc) => {
@@ -53,7 +53,7 @@ export const getAllUsersModel = async () => {
  * @returns {Promise<Object|null>} User data or null if not found
  */
 export const getUserByIdModel = async (uid) => {
-  const userDoc = await admin.firestore().collection('users').doc(uid).get();
+  const userDoc = await db.collection('users').doc(uid).get();
   if (!userDoc.exists) {
     return null;
   }
@@ -68,7 +68,7 @@ export const getUserByIdModel = async (uid) => {
 export const getUserByNameModel = async (name) => {
   try {
     // console.log("Fetching users with name:", name); //for debugging
-    const usersSnapshot = await admin.firestore().collection('users').where('name', '==', name).get();
+    const usersSnapshot = await db.collection('users').where('name', '==', name).get();
     const users = [];
 
     usersSnapshot.forEach((doc) => {
@@ -89,7 +89,7 @@ export const getUserByNameModel = async (name) => {
  * @returns {Promise<boolean>} True if updated, false if user not found
  */
 export const updateRoleModel = async (uid, role) => {
-  const userRef = admin.firestore().collection('users').doc(uid);
+  const userRef = db.collection('users').doc(uid);
   const userDoc = await userRef.get();
 
   if (!userDoc.exists) {
@@ -107,7 +107,7 @@ export const updateRoleModel = async (uid, role) => {
  * @returns {Promise<boolean>} True if updated, false if user not found
  */
 export const updateUserModel = async (uid, updateData) => {
-  const userRef = admin.firestore().collection('users').doc(uid);
+  const userRef = db.collection('users').doc(uid);
   const userDoc = await userRef.get();
 
   if (!userDoc.exists) {
@@ -128,7 +128,7 @@ export const updateUserModel = async (uid, updateData) => {
  * @returns {Promise<boolean>} True if deleted, false if user not found
  */
 export const deleteUserModel = async (uid) => {
-  const userRef = admin.firestore().collection('users').doc(uid);
+  const userRef = db.collection('users').doc(uid);
   const userDoc = await userRef.get();
 
   if (!userDoc.exists) {
@@ -150,7 +150,7 @@ export const deleteUserModel = async (uid) => {
  * @returns {Promise<boolean>} True if updated, false if user not found
  */
 export const blacklistUserModel = async (uid) => {
-  const userRef = admin.firestore().collection('users').doc(uid);
+  const userRef = db.collection('users').doc(uid);
   const userDoc = await userRef.get();
 
   if (!userDoc.exists) {
@@ -171,7 +171,7 @@ export const blacklistUserModel = async (uid) => {
  * @returns {Promise<boolean>} True if updated, false if user not found
  */
 export const unblacklistUserModel = async (uid) => {
-  const userRef = admin.firestore().collection('users').doc(uid);
+  const userRef = db.collection('users').doc(uid);
   const userDoc = await userRef.get();
 
   if (!userDoc.exists) {

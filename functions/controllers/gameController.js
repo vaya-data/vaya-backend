@@ -59,6 +59,7 @@ export const addGame = async (req, res) => {
 export const getGames = async (req, res) => {
     try {
         const gameData = await getGameModel();
+        console.log(gameData)
         return res.status(200).json(gameData);
     } catch (error) {
         console.error("Error fetching games:", error);
