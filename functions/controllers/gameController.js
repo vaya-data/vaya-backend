@@ -16,6 +16,8 @@ export const addGame = async (req, res) => {
             locationId,
             organizerId,
             amenities,
+            startTime,  
+            duration,
             participants = [],
             maxParticipants,
             reviews = [],
@@ -25,7 +27,7 @@ export const addGame = async (req, res) => {
         } = req.body;
 
         // Validate required fields
-        if (!locationId || !organizerId || !amenities || !format || !gender || !maxParticipants) {
+        if (!locationId || !organizerId || !amenities || !format || !gender || !maxParticipants  || !startTime || !duration) {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
@@ -34,6 +36,8 @@ export const addGame = async (req, res) => {
             locationId,
             organizerId,
             amenities,
+            startTime,  
+            duration,
             participants,
             maxParticipants,
             reviews,
