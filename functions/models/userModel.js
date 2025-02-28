@@ -1,4 +1,4 @@
-import { db } from "../config/firebaseAdmin.js";
+import { db ,admin} from "../config/firebaseAdmin.js";
 
 /**
  * Create a new user in Firebase Authentication and Firestore
