@@ -1,4 +1,4 @@
-import { db } from "../config/firebaseAdmin.js";
+import { db , admin} from "../config/firebaseAdmin.js";
 
 /**
  * Add a pitch to Firestore
@@ -46,6 +46,29 @@ export const getPitchByIdModel = async (pitchId) => {
     return null;
   }
   return { id: pitchDoc.id, ...pitchDoc.data() };
+};
+
+
+/**
+ * Get pitches by name
+ * @param {string} name
+ * @returns {Promise<Array>} List of pitch data or an empty array if not found
+ */
+export const getPitchByNameModel = async (name) => {
+  try {
+    // console.log("Fetching Pitch with name:", name); //for debugging
+    const pitchesSnapshot = await db.collection('pitches').where('name', '==', name).get();
+    const pitches = [];
+
+    pitchesSnapshot.forEach((doc) => {
+      pitches.push({ id: doc.id, ...doc.data() });
+    });
+
+    return pitches; // Return an array of pitches
+  } catch (error) {
+    console.error("Error fetching pitches by name:", error);
+    return []; // Return an empty array in case of error
+  }
 };
 
 /**

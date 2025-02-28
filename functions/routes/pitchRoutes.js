@@ -4,7 +4,8 @@ import {
   getPitches, 
   getPitchById, 
   updatePitch, 
-  deletePitch 
+  deletePitch, 
+  getPitchByName
 } from "../controllers/pitchController.js";
 
 const pitchRouter = express.Router();
@@ -13,6 +14,7 @@ const pitchRouter = express.Router();
 pitchRouter.post("/addpitch", addPitch);       // Add a new pitch
 pitchRouter.get("/getpitches", getPitches);    // Get all pitches
 pitchRouter.get("/getpitch/:id", getPitchById); // Get a single pitch by ID
+pitchRouter.get("/getpitch/name/:name", getPitchByName); // Get a single pitch by ID
 pitchRouter.put("/updatepitch/:id", updatePitch); // Update a pitch by ID
 pitchRouter.delete("/deletepitch/:id", deletePitch); // Delete a pitch by ID
 
