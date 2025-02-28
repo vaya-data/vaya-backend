@@ -13,6 +13,8 @@ import {
 export const addGame = async (req, res) => {
     try {
         const { 
+            title,
+            description,
             locationId,
             organizerId,
             amenities,
@@ -27,12 +29,14 @@ export const addGame = async (req, res) => {
         } = req.body;
 
         // Validate required fields
-        if (!locationId || !organizerId || !amenities || !format || !gender || !maxParticipants  || !startTime || !duration) {
+        if ( !title || !description || !locationId || !organizerId || !amenities || !format || !gender || !maxParticipants  || !startTime || !duration) {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
         // Add game to Firestore
         const gameRecord = await addGameModel({
+            title,
+            description,
             locationId,
             organizerId,
             amenities,
