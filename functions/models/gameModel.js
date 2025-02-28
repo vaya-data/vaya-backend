@@ -1,4 +1,4 @@
-import { db } from "../config/firebaseAdmin.js";
+import { db ,admin} from "../config/firebaseAdmin.js";
 
 /**
  * Add a game to Firestore
@@ -6,6 +6,8 @@ import { db } from "../config/firebaseAdmin.js";
  * @returns {Promise<Object>} Game reference
  */
 export const addGameModel = async ({
+    title,
+    description,
     locationId,
     organizerId,
     amenities,
@@ -22,6 +24,8 @@ export const addGameModel = async ({
         // Determine the status based on participants count
         const status = participants.length >= maxParticipants ? "inactive" : "active";
         const newGame = {
+            title,
+            description,
             locationId,
             organizerId,
             amenities,
