@@ -3,7 +3,8 @@ import {
   getPitchModel, 
   getPitchByIdModel, 
   updatePitchModel, 
-  deletePitchModel 
+  deletePitchModel, 
+  getPitchByNameModel
 } from "../models/pitchModel.js";
 
 /**
@@ -63,6 +64,26 @@ export const getPitchById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching pitch:", error);
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+/**
+ * Get a single pitch by name
+ * @route GET /getpitch/name/:name
+ */
+export const getPitchByName = async (req, res) => {
+  try {
+    const { name } = req.params;
+    const pitch = await getPitchByNameModel(name);
+
+    if (!pitch) {
+      return res.status(404).json({ error: "pitch not found" });
+    }
+
+    return res.status(200).json(pitch);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 };
 
